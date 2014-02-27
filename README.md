@@ -6,7 +6,8 @@ MongoDB, PyMongo, NetworkX, argparse, json
 ```
 asnum.py
 Queries RIPE API for AS belonging to particular countries
-For each AS number of country queries for peers and for each AS + peers queries BGPrank for reputation rank.
+ - for each AS number of country queries for peers
+ - for each AS queries BGPrank for reputation rank.
 ```
 
 ```
