@@ -31,23 +31,26 @@ i=0
 for res in results: #iterate through the results fron database
     i=1+i
     print "Doing %s of %s asn" % (i,results.count())
-    G.add_node(res["asn"], country = res["country"]) #populate graph nodes
+    if(res['bgprank']!=None):
+	G.add_node(res["asn"], country = res["country"], rank = float(res['bgprank'])) #populate graph nodes
+    else:
+	G.add_node(res["asn"], country = res["country"], rank = 0)
     j=0
     for peer in res["peers"]:
         j=j+1
-        #print "     Doing %s of %s asn" % (j,len(res["peers"]))
+        print "Doing %s of %s asn" % (j,len(res["peers"]))
         
-        peer_obj=db.asDB.find_one({"asn":peer},fields=["bgprank"])
+        peer_obj=db.asDB.find_one({"asn":peer})
         
         if(peer_obj!=None):
-            G.add_edge(res["asn"], peer, weight=float(res["bgprank"]) + float(peer_obj["bgprank"]))
+            G.add_edge(res["asn"], peer)
         else:#unstored asn
             print "No record for asn %s" % peer
             #G.add_edge(res["asn"], peer, weight=2)   #populate graph edges
 
 nx.write_gexf(G, "EUbadboys.gexf")
-print G.number_of_nodes()
-print G.number_of_edges()
+#print G.number_of_nodes()
+#print G.number_of_edges()
 
 
 

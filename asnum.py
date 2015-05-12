@@ -10,6 +10,7 @@ __version__ = 1.0
 
 #import modules
 import pymongo,json, time
+import bgpranking_web
 import argparse
 import sys
 import socket
@@ -20,7 +21,8 @@ import urllib2
 connect = pymongo.MongoClient("localhost", 27017)
 db = connect.asnum
 #select collection from MongoDB
-EU_memberstates = ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "ES", "FI", "FR", "GB", "GR", "HU", "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PL", "PT", "RO", "SE", "SI", "SK"]
+#EU_memberstates = ["AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "ES", "FI", "FR", "GB", "GR", "HU", "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PL", "PT", "RO", "SE", "SI", "SK"]
+EU_memberstates = ["RO"]
 asnlist = {}
 
 
@@ -54,17 +56,8 @@ def peerQueryRipe(asnumber = None):
 
 #function to query BGPrank api
 def queryBgprank(query = None):
-    HOST = 'pdns.circl.lu'    # The remote services host
-    PORT = 43                 # The same port as used by the server
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.connect((HOST, PORT))
-    #print query
-    s.send(str(query) + "\r\n") #Send ASNumber and query for reputation information
-    data = s.recv(1024)
-    s.close()
-    data = data.split("\n") #Split by new-line into array and print second line
-    
-    return data[1].split(",")[1]
+    data = bgpranking_web.cached_daily_rank(query)
+    return data[4]
 #    print 'Received', repr(data)
 
 #function to query TeamCymru IP2ASN
