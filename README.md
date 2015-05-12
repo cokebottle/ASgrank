@@ -14,6 +14,6 @@ Queries RIPE API for AS belonging to particular countries
 graphbuild.py
 Creates the graph of peerings along with BGPRank of each AS.
 ```
-#### The red colored edges in the graph represent bad reputation of AS neighbors 
+#### The red colored edges in the graph represent bad reputation of AS neighbours 
 ![Graph](http://raw.github.com/cokebottle/ASgrank/master/cool_weighted.png)
 
